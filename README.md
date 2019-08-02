@@ -1,7 +1,12 @@
-# LogView
+# LogViewPlus
 Logfile highlighter for Sublime Text 3.
 
-![ScreenShot](https://raw.github.com/FlashSystems/LogView/master/README/LogViewScreen.png)
+![ScreenShot](https://raw.github.com/kulack/LogViewPlus/master/README/LogViewPlusScreen.png)
+
+## Notices
+
+* Forked by Kulack 8/2/2019 for experimenting and minor tweaks.
+
 
 ## Requirements
 This plug-in requires at least Sublime Text 3 Build 3065. Please download the correct sublime text version before using this plug-in.
@@ -17,16 +22,16 @@ All files using the extension .log are automatically opened as logfiles. Any oth
 
 ## Installation
 
-This package should be installed using Package Control. Follow these steps to install LogView:
+This package should be installed using Package Control. Follow these steps to install LogViewPlus:
 - Make sure you're using the correct Sublime Text 3 version (see Requirements).
 - Install [Package Control](https://sublime.wbond.net/installation) if you don't already have it.
-- [Use Package Control](https://sublime.wbond.net/docs/usage) to search for LogView and install the package.
+- [Use Package Control](https://sublime.wbond.net/docs/usage) to search for LogViewPlus and install the package.
 
 ## Editing the logfile
 You have to switch to the "Plain Text" syntax in order to edit the opened logfile. As soon as you're done editing the file, you can switch back to the "Logfile" syntax. The file will automatically be parsed again and set to read-only.
 
 ## Automatic highlighting
-The LogView plug-in distinguishes three types of log entries:
+The LogViewPlus plug-in distinguishes three types of log entries:
 - errors
 - warnings
 - marks
@@ -54,4 +59,4 @@ The "error_filter", "warning_filter" and "mark_filer" regular expressions contai
 | auto_match_words       | `true`                       | 	If this config option is set to true the reguluar expression set via `error_filter`, `warning_filter` and `mark_filter` is automatically extended to only match whole words. If you want to use the regular expressions as they are specified, set this value to false. |
 | highlight_style        | `underline`  | Configures the style for marking the lines selected by the filters. Available styles are: fill, outline, underline and none. See default config for details. |
 
-All configuration parameters can be set via the Preferences menu. Just open Preferences > Package Settings > Log View > Settings.
+All configuration parameters can be set via the Preferences menu. Just open Preferences > Package Settings > Log View Plus > Settings.

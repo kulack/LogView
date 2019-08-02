@@ -39,7 +39,7 @@ class StatusAnimation:
 			self.stopFlag = True
 			self.view.erase_status(self.key)
 
-class LogView:
+class LogViewPlus:
 	regionStyles = {
 		"fill": 0,
 		"outline": sublime.DRAW_NO_FILL,
@@ -61,12 +61,12 @@ class LogView:
 			# Expand all regions to match the whole line and mark the line with the given scpe
 			for i in range(0, numFoundRegions):
 				foundRegions[i] = view.line(foundRegions[i])
-			view.add_regions(regionName, foundRegions, scope, "Packages/LogView/" + icon + ".png", regionFlags);
+			view.add_regions(regionName, foundRegions, scope, "Packages/LogViewPlus/" + icon + ".png", regionFlags);
 
 		return foundRegions
 
 	def markupView(self, view, statusAnimation):
-		settings = sublime.load_settings("logview.sublime-settings")
+		settings = sublime.load_settings("logviewplus.sublime-settings")
 
 		errorRegex = settings.get("error_filter", "error|fail|exception")
 		errorScope = settings.get("error_scope", "markup.deleted")
@@ -93,13 +93,13 @@ class LogView:
 			regionFlags = self.regionStyles["outline"]
 
 		foundRegions = self.highlight(view, markRegex, "logfile.marks", markScope, "mark", regionFlags)
-		view.set_status("logview.2", markStatusCaption + " " + str(len(foundRegions)))
+		view.set_status("logviewplus.2", markStatusCaption + " " + str(len(foundRegions)))
 		bookmarks = foundRegions
 		foundRegions = self.highlight(view, warningRegex, "logfile.warnings", warningScope, "warning", regionFlags)
-		view.set_status("logview.1", warningStatusCaption + " " + str(len(foundRegions)))
+		view.set_status("logviewplus.1", warningStatusCaption + " " + str(len(foundRegions)))
 		bookmarks += foundRegions
 		foundRegions = self.highlight(view, errorRegex, "logfile.errors", errorScope, "error", regionFlags)
-		view.set_status("logview.0", errorStatusCaption + " " + str(len(foundRegions)))
+		view.set_status("logviewplus.0", errorStatusCaption + " " + str(len(foundRegions)))
 		bookmarks += foundRegions
 		del foundRegions
 
@@ -118,7 +118,7 @@ class LogView:
 	# Makes it read only and applies the highlighting
 	def prepareView(self, view):
 		view.set_read_only(True)
-		view.set_status("logview", "read-only")
+		view.set_status("logviewplus", "read-only")
 
 		# Set a temporary message
 		statusAnimation = StatusAnimation()
@@ -131,24 +131,24 @@ class LogView:
 	# Called to remove the preparations from the log file and turn it into a normal view.
 	def unprepareView(self, view):
 		view.set_read_only(False)
-		view.erase_status("logview")
-		view.erase_status("logview.0")
-		view.erase_status("logview.1")
-		view.erase_status("logview.2")
+		view.erase_status("logviewplus")
+		view.erase_status("logviewplus.0")
+		view.erase_status("logviewplus.1")
+		view.erase_status("logviewplus.2")
 		view.erase_regions("logfile.errors")
 		view.erase_regions("logfile.warnings")
 		view.erase_regions("logfile.marks")
 		view.erase_regions("bookmarks")
 
-class EventListener(LogView, sublime_plugin.EventListener):
+class EventListener(LogViewPlus, sublime_plugin.EventListener):
 	# Called when a file is finished loading.
 	def on_load(self, view):
-		if (view.settings().get('syntax') == "Packages/LogView/logview.tmLanguage"):
+		if (view.settings().get('syntax') == "Packages/LogViewPlus/logviewplus.tmLanguage"):
 			self.prepareView(view)
 
 	# Called if a new view is created from an existing one. We've to check again if this view contains a logfile.
 	def on_clone(self, view):
-		if (view.settings().get('syntax') == "Packages/LogView/logview.tmLanguage"):
+		if (view.settings().get('syntax') == "Packages/LogViewPlus/logviewplus.tmLanguage"):
 			self.prepareView(view)
 
 	# Called if a text command is executed on the buffer
@@ -158,22 +158,22 @@ class EventListener(LogView, sublime_plugin.EventListener):
 			newSyntax = args["syntax"]
 
 			if (newSyntax != currentSyntax):
-				if (newSyntax == "Packages/LogView/logview.tmLanguage"):
-					# If the new syntax is logview then prepare the view.
+				if (newSyntax == "Packages/LogViewPlus/logviewplus.tmLanguage"):
+					# If the new syntax is logviewplus then prepare the view.
 					self.prepareView(view)
 				else:
-					# If the old syntax was logview then remove our preparations
-					if (view.settings().get('syntax') == "Packages/LogView/logview.tmLanguage"):
+					# If the old syntax was logviewplus then remove our preparations
+					if (view.settings().get('syntax') == "Packages/LogViewPlus/logviewplus.tmLanguage"):
 						self.unprepareView(view)
 
 		# Always run the command as is
 		return None
 
-class LogViewRescan(LogView, sublime_plugin.TextCommand):
+class LogViewPlusRescan(LogViewPlus, sublime_plugin.TextCommand):
 	def run(self, edit):
-		if (self.view.settings().get('syntax') == "Packages/LogView/logview.tmLanguage"):
+		if (self.view.settings().get('syntax') == "Packages/LogViewPlus/logviewplus.tmLanguage"):
 			self.unprepareView(self.view)
 			self.prepareView(self.view)
 
 	def is_enabled(self):
-		return self.view.settings().get('syntax') == "Packages/LogView/logview.tmLanguage"
+		return self.view.settings().get('syntax') == "Packages/LogViewPlus/logviewplus.tmLanguage"
