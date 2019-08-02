@@ -117,8 +117,8 @@ class LogViewPlus:
 	# Called to prepare the view:
 	# Makes it read only and applies the highlighting
 	def prepareView(self, view):
-		view.set_read_only(True)
-		view.set_status("logviewplus", "read-only")
+		# view.set_read_only(True)
+		# view.set_status("logviewplus", "read-only")
 
 		# Set a temporary message
 		statusAnimation = StatusAnimation()
@@ -130,8 +130,8 @@ class LogViewPlus:
 
 	# Called to remove the preparations from the log file and turn it into a normal view.
 	def unprepareView(self, view):
-		view.set_read_only(False)
-		view.erase_status("logviewplus")
+		# view.set_read_only(False)
+		# view.erase_status("logviewplus")
 		view.erase_status("logviewplus.0")
 		view.erase_status("logviewplus.1")
 		view.erase_status("logviewplus.2")
